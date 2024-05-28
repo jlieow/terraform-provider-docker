@@ -6,7 +6,6 @@ require (
 	github.com/docker/docker v26.1.3+incompatible
 	github.com/hashicorp/terraform-plugin-framework v1.8.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
-	rsc.io/quote v1.5.2
 )
 
 require (
@@ -55,5 +54,4 @@ require (
 	google.golang.org/grpc v1.63.2 // indirect
 	google.golang.org/protobuf v1.34.0 // indirect
 	gotest.tools/v3 v3.5.1 // indirect
-	rsc.io/sampler v1.3.0 // indirect
 )

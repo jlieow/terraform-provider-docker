@@ -201,7 +201,17 @@ func (r *imageResource) Create(ctx context.Context, req resource.CreateRequest, 
 
 		plan.ID = types.StringValue(imageInspect.ID)
 		plan.Created = types.StringValue(imageInspect.Created)
-		plan.DockerFileName = types.StringValue(dockerFile)
+
+		// Gets each tag, puts it into tagModel{} and appends to state.Tags
+		plan.Tags = []tagModel{}
+		for _, item := range imageInspect.RepoTags {
+			repotagSplit := strings.Split(item, ":")
+
+			plan.Tags = append(plan.Tags, tagModel{
+				Repository: types.StringValue(repotagSplit[0]),
+				Tag:        types.StringValue(repotagSplit[1]),
+			})
+		}
 	}
 
 	// Set state to fully populated data
