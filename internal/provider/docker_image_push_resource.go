@@ -42,9 +42,9 @@ type imagePushResourceModel struct {
 	Image         types.String `tfsdk:"image"`
 	Username      types.String `tfsdk:"username"`
 	Password      types.String `tfsdk:"password"`
-	ServerAddress types.String `tfsdk:"serveraddress"`
-	IdentityToken types.String `tfsdk:"identitytoken"`
-	RegistryToken types.String `tfsdk:"registrytoken"`
+	ServerAddress types.String `tfsdk:"server_address"`
+	IdentityToken types.String `tfsdk:"identity_token"`
+	RegistryToken types.String `tfsdk:"registry_token"`
 }
 
 // Schema defines the schema for the resource.
@@ -72,22 +72,22 @@ func (r *imagePushResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"serveraddress": schema.StringAttribute{
-				Description: "ServerAddress of AuthConfig struct as specified in https://pkg.go.dev/github.com/docker/docker/api/types/registry#AuthConfig",
+			"server_address": schema.StringAttribute{
+				Description: "server_address is the ServerAddress in the AuthConfig struct as specified in https://pkg.go.dev/github.com/docker/docker/api/types/registry#AuthConfig",
 				Optional:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"identitytoken": schema.StringAttribute{
-				Description: "IdentityToken is used to authenticate the user and get an access token for the registry as specified in https://pkg.go.dev/github.com/docker/docker/api/types/registry#AuthConfig",
+			"identity_token": schema.StringAttribute{
+				Description: "identity_token refers to IdentityToken, used to authenticate the user and get an access token for the registry as specified in https://pkg.go.dev/github.com/docker/docker/api/types/registry#AuthConfig",
 				Optional:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"registrytoken": schema.StringAttribute{
-				Description: "RegistryToken is a bearer token to be sent to a registry as specified in https://pkg.go.dev/github.com/docker/docker/api/types/registry#AuthConfig",
+			"registry_token": schema.StringAttribute{
+				Description: "registry_token refers to RegistryToken, a bearer token to be sent to a registry as specified in https://pkg.go.dev/github.com/docker/docker/api/types/registry#AuthConfig",
 				Optional:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
