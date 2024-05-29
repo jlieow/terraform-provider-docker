@@ -39,27 +39,18 @@ func (r *imagePushResource) Metadata(_ context.Context, req resource.MetadataReq
 }
 
 type imagePushResourceModel struct {
-	PushImageOn   types.String `tfsdk:"push_image_on"`
 	Image         types.String `tfsdk:"image"`
 	Username      types.String `tfsdk:"username"`
 	Password      types.String `tfsdk:"password"`
 	ServerAddress types.String `tfsdk:"server_address"`
 	IdentityToken types.String `tfsdk:"identity_token"`
 	RegistryToken types.String `tfsdk:"registry_token"`
-	PushResult    types.String `tfsdk:"push_result"`
 }
 
 // Schema defines the schema for the resource.
 func (r *imagePushResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
-			"push_image_on": schema.StringAttribute{
-				Description: "Pushes the image if this value is updated.",
-				Optional:    true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
 			"image": schema.StringAttribute{
 				Description: "Repository and tag of the image in the format repository:tag.",
 				Required:    true,
@@ -102,10 +93,6 @@ func (r *imagePushResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"push_result": schema.StringAttribute{
-				Description: "Output of the push.",
-				Computed:    true,
-			},
 		},
 	}
 }
@@ -147,12 +134,10 @@ func (r *imagePushResource) Create(ctx context.Context, req resource.CreateReque
 	}
 
 	buf := new(strings.Builder)
+	fmt.Println("buf.String()")
+	fmt.Println(buf.String())
 	_, err = io.Copy(buf, pushResult)
 	if err != nil {
-
-		fmt.Println("****Unable to push docker image")
-		fmt.Println(err.Error())
-
 		tflog.Debug(ctx, "Unable to push docker image")
 		tflog.Debug(ctx, err.Error())
 
@@ -162,32 +147,17 @@ func (r *imagePushResource) Create(ctx context.Context, req resource.CreateReque
 		)
 	}
 
-	fmt.Println("buf.String()")
-	fmt.Println(buf.String())
+	fmt.Println("strings contains")
+	fmt.Println(strings.Contains(buf.String(), "error"))
 
-	pushResultSplit := strings.Split(buf.String(), "\n")
-
-	resultMessage := "Push result could not be parsed."
-	for index := len(pushResultSplit) - 1; index >= 0; index-- {
-
-		toCompare := strings.ToLower(pushResultSplit[index])
-		if strings.Contains(toCompare, "error") || strings.Contains(toCompare, "digest") {
-			resultMessage = pushResultSplit[index]
-			break
-		}
-	}
-
-	if strings.Contains(buf.String(), "error") || len(buf.String()) == 0 {
-
+	if strings.Contains(buf.String(), "error") {
 		resp.Diagnostics.AddError(
 			"Unable to push docker image",
-			"Could push Image ID "+plan.Image.ValueString()+": "+"There was an error in the push result. "+resultMessage,
+			"Could push Image ID "+plan.Image.ValueString()+": "+err.Error(),
 		)
 	}
 
-	plan.PushResult = types.StringValue(resultMessage)
-
-	// tflog.Debug(ctx, "Docker image pushed!")
+	tflog.Debug(ctx, "Docker image pushed!")
 
 	// Set state to fully populated data
 	diags = resp.State.Set(ctx, &plan)
@@ -200,20 +170,7 @@ func (r *imagePushResource) Create(ctx context.Context, req resource.CreateReque
 
 // Read refreshes the Terraform state with the latest data.
 func (r *imagePushResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	// // Get current state
-	// var state imageResourceModel
-	// diags := req.State.Get(ctx, &state)
-	// resp.Diagnostics.Append(diags...)
-	// if resp.Diagnostics.HasError() {
-	// 	return
-	// }
 
-	// // Set refreshed state
-	// diags = resp.State.Set(ctx, &state)
-	// resp.Diagnostics.Append(diags...)
-	// if resp.Diagnostics.HasError() {
-	// 	return
-	// }
 }
 
 // Update updates the resource and sets the updated Terraform state on success.
