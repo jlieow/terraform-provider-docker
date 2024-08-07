@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/docker/docker v26.1.3+incompatible
-	github.com/hashicorp/terraform-plugin-framework v1.8.0
+	github.com/hashicorp/terraform-plugin-framework v1.11.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 )
 
