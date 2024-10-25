@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	dockertypes "github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -82,7 +82,7 @@ func (d *dockerimageDataSource) Schema(_ context.Context, _ datasource.SchemaReq
 func (d *dockerimageDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var state dockerimageDataSourceModel
 
-	images, err := d.client.ImageList(context.Background(), dockertypes.ImageListOptions{})
+	images, err := d.client.ImageList(context.Background(), image.ListOptions{})
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to Read Docker Images, please ensure that docker daemon is up and running.",
