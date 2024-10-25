@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -478,36 +477,36 @@ func (r *imageResource) Configure(_ context.Context, req resource.ConfigureReque
 	r.client = client
 }
 
-func createTarFromDir(dir string, ctx context.Context) *bytes.Reader {
+// func createTarFromDir(dir string, ctx context.Context) *bytes.Reader {
 
-	buf := new(bytes.Buffer)
-	tw := tar.NewWriter(buf)
-	defer tw.Close()
+// 	buf := new(bytes.Buffer)
+// 	tw := tar.NewWriter(buf)
+// 	defer tw.Close()
 
-	items, _ := ioutil.ReadDir(dir)
-	for _, item := range items {
-		if item.IsDir() {
-			subitems, _ := ioutil.ReadDir(item.Name())
-			for _, subitem := range subitems {
-				if !subitem.IsDir() {
-					// handle file there
-					fmt.Println("****dirfile")
-					fmt.Println(item.Name() + "/" + subitem.Name())
-				}
-			}
-		} else {
-			// handle file there
-			fmt.Println("****file")
-			fmt.Println(item.Name())
+// 	items, _ := os.ReadDir(dir)
+// 	for _, item := range items {
+// 		if item.IsDir() {
+// 			subitems, _ := os.ReadDir(item.Name())
+// 			for _, subitem := range subitems {
+// 				if !subitem.IsDir() {
+// 					// handle file there
+// 					fmt.Println("****dirfile")
+// 					fmt.Println(item.Name() + "/" + subitem.Name())
+// 				}
+// 			}
+// 		} else {
+// 			// handle file there
+// 			fmt.Println("****file")
+// 			fmt.Println(item.Name())
 
-			addFileToTar(ctx, tw, dir, item.Name())
-		}
-	}
+// 			addFileToTar(ctx, tw, dir, item.Name())
+// 		}
+// 	}
 
-	buildContext := bytes.NewReader(buf.Bytes())
+// 	buildContext := bytes.NewReader(buf.Bytes())
 
-	return buildContext
-}
+// 	return buildContext
+// }
 
 // Move inside each directory and write info to tar
 // dirPath : folder which you want to tar it.
@@ -563,7 +562,7 @@ func addFileToTar(ctx context.Context, tw *tar.Writer, dir string, fileName stri
 	if err != nil {
 		tflog.Debug(ctx, " :****unable to open Dockerfile")
 	}
-	readFile, err := ioutil.ReadAll(fileReader)
+	readFile, err := io.ReadAll(fileReader)
 	if err != nil {
 		tflog.Debug(ctx, " :****unable to read dockerfile")
 	}

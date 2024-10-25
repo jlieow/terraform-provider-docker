@@ -25,7 +25,8 @@ func TestDirTraversalUnnested(t *testing.T) {
 	fmt.Println(discoveredDirFileCount)
 
 	if expectedDirFileCount != discoveredDirFileCount {
-		t.Fatalf("Directory/File count is incorrect! Expected number of directory/files is " + strconv.Itoa(expectedDirFileCount) + " but found " + strconv.Itoa(discoveredDirFileCount) + " directory/files.")
+		errorMessage := "Directory/File count is incorrect! Expected number of directory/files is " + strconv.Itoa(expectedDirFileCount) + " but found " + strconv.Itoa(discoveredDirFileCount) + " directory/files."
+		t.Fatalf("%s", errorMessage)
 	}
 }
 
@@ -45,6 +46,7 @@ func TestDirTraversalNested(t *testing.T) {
 	fmt.Println(discoveredDirFileCount)
 
 	if expectedDirFileCount != discoveredDirFileCount {
-		t.Fatalf("Directory/File count is incorrect! Expected number of directory/files is " + strconv.Itoa(expectedDirFileCount) + " but found " + strconv.Itoa(discoveredDirFileCount) + " directory/files.")
+		errorMessage := "Directory/File count is incorrect! Expected number of directory/files is " + strconv.Itoa(expectedDirFileCount) + " but found " + strconv.Itoa(discoveredDirFileCount) + " directory/files."
+		t.Fatalf("%s", errorMessage)
 	}
 }

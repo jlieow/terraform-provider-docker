@@ -56,11 +56,11 @@ func (p *dockerProvider) Schema(_ context.Context, _ provider.SchemaRequest, res
 }
 
 // dockerProviderModel maps provider schema data to a Go type.
-type dockerProviderModel struct {
-	// Region    types.String `tfsdk:"region"`
-	// AccessKey types.String `tfsdk:"access_key"`
-	// SecretKey types.String `tfsdk:"secret_key"`
-}
+// type dockerProviderModel struct {
+// 	// Region    types.String `tfsdk:"region"`
+// 	// AccessKey types.String `tfsdk:"access_key"`
+// 	// SecretKey types.String `tfsdk:"secret_key"`
+// }
 
 func (p *dockerProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
 
