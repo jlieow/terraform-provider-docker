@@ -162,7 +162,7 @@ func (r *imageResource) Create(ctx context.Context, req resource.CreateRequest, 
 		dockerFile = plan.DockerFileName.ValueString()
 	}
 
-	platform := ""
+	platform := "linux/arm64"
 	if plan.Platform.ValueString() != "" {
 		platform = plan.Platform.ValueString()
 	}
